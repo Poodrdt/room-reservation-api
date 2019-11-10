@@ -1,6 +1,6 @@
 from rest_framework.response import Response
 from rest_framework import viewsets, generics, status
-from .models import Reservation
+from .models import Reservation, Employee, Room
 from .serializers import (
     EmployeeSerializer,
     RoomSerializer,
@@ -23,23 +23,30 @@ class UserList(generics.ListCreateAPIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-class EmployeeViewset(viewsets.ViewSet):
+class EmployeeViewset(viewsets.ModelViewSet):
+    queryset = Employee.objects.all()
     serializer_class = EmployeeSerializer
 
 
-class RoomViewset(viewsets.ViewSet):
+class RoomViewset(viewsets.ModelViewSet):
+    queryset = Room.objects.all()
     serializer_class = RoomSerializer
 
 
-class ReservationViewset(viewsets.ViewSet):
+class ReservationViewset(viewsets.ModelViewSet):
     serializer_class = ReservationSerializer
 
+    # https://stackoverflow.com/questions/9044084/efficient-date-range-overlap-calculation-in-python
+
     # def post(self, request):
+    # Reservation.objects.exists(
+    #     start__lte=reservation_finish, end__gte=reservation_start
+    # )
 
     def get_queryset(self, **kwargs):
         now = datetime.datetime.utcnow().replace(tzinfo=utc)
-        queryset = Reservation.objects.filter(from_time_gt=now)
+        queryset = Reservation.objects.filter(start__gt=now)
         user_filter = self.request.query_params.get("user_filter", None)
-        if username is not None:
+        if user_filter is not None:
             queryset = queryset.filter(employee__user__username=user_filter)
         return queryset

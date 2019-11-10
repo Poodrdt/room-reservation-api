@@ -8,7 +8,7 @@ User = get_user_model()
 class EmployeeSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        exclude_fields = []
+        exclude = []
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -46,10 +46,10 @@ class UserSerializer(serializers.ModelSerializer):
 class RoomSerializer(serializers.ModelSerializer):
     class Meta:
         model = Room
-        exclude_fields = []
+        exclude = []
 
 
 class ReservationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Reservation
-        exclude_fields = []
+        exclude = []

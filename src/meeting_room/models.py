@@ -12,7 +12,7 @@ class Room(models.Model):
     name = models.CharField(max_length=255)
 
     def is_vacant(self, start, end):
-        if time in self.reservation_set():
+        if time in obj.reservation_set():
             return False
         return True
 
