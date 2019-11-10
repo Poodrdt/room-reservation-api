@@ -1,18 +1,7 @@
-PYTHON
 
-About
-Company needs an internal service for its’ employees which helps them to reserve companies meeting room for internal
-or external meetings. Each employee should be able to check each room’s availability, book or cancel a reservation
-through an API.
- 
 
-○	Authentication
-○	Creating meeting room 
-○	Creating employee
-○	Get meeting room reservations and possibility to filter by employee
-○	Create reservation(Reservation has title, from and to dates, employees)
-○	Cancel reservation
-○	Logout
+- book
+
 ●	Reasonable amount of automated tests 
 ●	Sufficient logging must be implemented
 ●	Project README.md must be created with instructions 
