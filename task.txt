@@ -1,7 +1,5 @@
 
 
-- book
-
 ●	Reasonable amount of automated tests 
 ●	Sufficient logging must be implemented
 ●	Project README.md must be created with instructions 

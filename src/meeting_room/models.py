@@ -5,10 +5,6 @@ from django.db.models import Q
 User = get_user_model()
 
 
-class Employee(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-
-
 class Room(models.Model):
     name = models.CharField(max_length=255)
 
@@ -21,7 +17,7 @@ class Room(models.Model):
 
 class Reservation(models.Model):
     title = models.CharField(max_length=255)
-    emploee = models.ForeignKey(Employee, on_delete=models.CASCADE)
+    employee = models.ForeignKey(User, on_delete=models.CASCADE)
     room = models.ForeignKey(Room, on_delete=models.CASCADE)
     start = models.DateTimeField()
     end = models.DateTimeField()
