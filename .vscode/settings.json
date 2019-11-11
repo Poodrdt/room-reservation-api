@@ -1,6 +1,6 @@
 {
-    "python.pythonPath": "C:\\Users\\Yaro\\.virtualenvs\\Tallin-050jpQ8q\\Scripts\\python.exe",
+    "python.pythonPath": "C:\\Users\\dfmdeveloper10\\.virtualenvs\\Tallin-kA_drEpL\\Scripts\\python.exe",
     "python.formatting.provider": "black",
-    "djangointellisense.projectRoot": "C:\\Users\\Yaro\\Documents\\PYTHON\\Tallin\\src",
-    "djangointellisense.settingsModule": "C:\\Users\\Yaro\\Documents\\PYTHON\\Tallin\\src\\main\\settings.py"
+    "djangointellisense.projectRoot": "${workspaceFolder}\\src",
+    "djangointellisense.settingsModule": "${workspaceFolder}\\src\\main\\settings.py"
 }

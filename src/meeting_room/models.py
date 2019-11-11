@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth import get_user_model
+from django.db.models import Q
 
 User = get_user_model()
 
@@ -12,7 +13,8 @@ class Room(models.Model):
     name = models.CharField(max_length=255)
 
     def is_vacant(self, start, end):
-        if time in obj.reservation_set():
+        overlap = Reservation.objects.filter(Q(pk=self.pk) & (Q(start__lte=start) | Q(end__gte=end))).exists()
+        if overlap:
             return False
         return True
 

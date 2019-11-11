@@ -7,38 +7,20 @@ User = get_user_model()
 
 class EmployeeSerializer(serializers.ModelSerializer):
     class Meta:
-        model = User
+        model = Employee
         exclude = []
 
 
 class UserSerializer(serializers.ModelSerializer):
-    employee = EmployeeSerializer(required=True)
-
     class Meta:
         model = User
-        fields = (
-            "url",
-            "email",
-            "employee",
-            "created",
-        )
+        # exclude = []
+        fields = ('id', 'password', 'username', 'first_name', 'last_name', 'email', 'employee')
 
     def create(self, validated_data):
-
-        # create user
-        user = User.objects.create(
-            url=validated_data["url"],
-            email=validated_data["email"],
-            # etc ...
-        )
-
-        # employee_data = validated_data.pop("employee")
-        # create employee
+        user = super().create(validated_data)
         employee = Employee.objects.create(
             user=user
-            # first_name = employee_data['first_name'],
-            # last_name = employee_data['last_name'],
-            # # etc...
         )
         return user
 

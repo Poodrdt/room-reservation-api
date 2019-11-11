@@ -1,5 +1,6 @@
 from rest_framework.response import Response
 from rest_framework import viewsets, generics, status
+from django.contrib.auth import get_user_model
 from .models import Reservation, Employee, Room
 from .serializers import (
     EmployeeSerializer,
@@ -10,9 +11,12 @@ from .serializers import (
 import datetime
 from django.utils.timezone import utc
 
+User = get_user_model()
 
-class UserList(generics.ListCreateAPIView):
+
+class UserViewset(viewsets.ModelViewSet):
     # permission_classes = (IsAuthenticated,)
+    queryset = User.objects.all()
     serializer_class = UserSerializer
 
     def post(self, request, format=None):
