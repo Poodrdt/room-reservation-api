@@ -8,11 +8,8 @@ User = get_user_model()
 class Room(models.Model):
     name = models.CharField(max_length=255)
 
-    def is_vacant(self, start, end):
-        overlap = Reservation.objects.filter(Q(pk=self.pk) & (Q(start__lte=start) | Q(end__gte=end))).exists()
-        if overlap:
-            return False
-        return True
+    def __str__(self):
+        return str(self.name)
 
 
 class Reservation(models.Model):
@@ -21,3 +18,6 @@ class Reservation(models.Model):
     room = models.ForeignKey(Room, on_delete=models.CASCADE)
     start = models.DateTimeField()
     end = models.DateTimeField()
+
+    def __str__(self):
+        return str(self.title) + str(self.start) + str(self.end)

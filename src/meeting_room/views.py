@@ -36,7 +36,8 @@ class ReservationViewset(viewsets.ModelViewSet):
 
     def get_queryset(self, **kwargs):
         now = datetime.datetime.utcnow().replace(tzinfo=utc)
-        queryset = Reservation.objects.filter(start__gt=now)
+        # queryset = Reservation.objects.filter(start__gt=now)
+        queryset = Reservation.objects.all()
         user_filter = self.request.query_params.get("user_filter", None)
         if user_filter is not None:
             queryset = queryset.filter(employee__username=user_filter)
