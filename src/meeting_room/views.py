@@ -12,6 +12,28 @@ from django.utils.timezone import utc
 
 User = get_user_model()
 
+# class UserViewSet(viewsets.ModelViewSet):
+#     """
+#     API endpoint that allows users to be viewed or edited.
+#     """
+#     serializer_class = UserSerializer
+#     model = User
+
+#     def get_serializer_class(self):
+#         serializer_class = self.serializer_class
+
+#         if self.request.method == 'PUT':
+#             serializer_class = SerializerWithoutUsernameField
+
+#         return serializer_class
+
+#     def get_permissions(self):
+#         if self.request.method == 'DELETE':
+#             return [IsAdminUser()]
+#         elif self.request.method == 'POST':
+#             return [AllowAny()]
+#         else:
+#             return [IsStaffOrTargetUser()]
 
 class UserViewset(viewsets.ModelViewSet):
     # permission_classes = (IsAuthenticated,)
@@ -34,5 +56,5 @@ class ReservationViewset(viewsets.ModelViewSet):
         queryset = Reservation.objects.all()
         user_filter = self.request.query_params.get("user_filter", None)
         if user_filter is not None:
-            queryset = queryset.filter(employee__username=user_filter)
+            queryset = queryset.filter(employee__id=user_filter)
         return queryset

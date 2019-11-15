@@ -12,3 +12,9 @@
 ●	Sufficient logging must be implemented
 ●	PEP8 rules must be followed. Additional linters are welcomed (PyLint, etc)
 ●	Project README.md must be created with instructions 
+
+
+-update for user
+-permissions
+-serializer?
+-user filter

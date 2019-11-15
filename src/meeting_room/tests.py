@@ -5,16 +5,22 @@ from rest_framework.test import APITestCase, APIClient
 from .views import *
 from .serializers import *
 
-class ReservationTest(APITestCase):
+class RoomListTest(APITestCase):
     def setUp(self):
+        names = [f'Room{i}' for i in range(5)]
+        map(lambda r: Room.objects.create(name=r), names)
         self.client = APIClient()
         self.user = User.objects.create_user(
             username='test_user', password='test_pwd')
 
-    def test_list_room(self):
+    def test_get_all_rooms(self):
         url = reverse('room-list')
         response = self.client.get(url)
+        rooms = Room.objects.all()
+        serializer = RoomSerializer(rooms, many=True)
+        self.assertEqual(response.data, serializer.data)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
+
 
     def test_create_room(self):
         url = reverse('room-list')
@@ -25,6 +31,7 @@ class ReservationTest(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(Room.objects.count(), 1)
         self.assertEqual(Room.objects.get().name, 'test_room')
+        self.assertEqual(response.data.get('name'), 'test_room')
 
 
 
