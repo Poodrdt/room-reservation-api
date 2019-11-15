@@ -2,5 +2,6 @@
     "python.pythonPath": "C:\\Users\\dfmdeveloper10\\.virtualenvs\\Tallin-kA_drEpL\\Scripts\\python.exe",
     "python.formatting.provider": "black",
     "djangointellisense.projectRoot": "${workspaceFolder}\\src",
-    "djangointellisense.settingsModule": "${workspaceFolder}\\src\\main\\settings.py"
+    "djangointellisense.settingsModule": "${workspaceFolder}\\src\\main\\settings.py",
+    "gitlens.codeLens.enabled": false
 }
