@@ -35,6 +35,7 @@ User = get_user_model()
 #         else:
 #             return [IsStaffOrTargetUser()]
 
+
 class UserViewset(viewsets.ModelViewSet):
     # permission_classes = (IsAuthenticated,)
     queryset = User.objects.all()
@@ -48,7 +49,6 @@ class RoomViewset(viewsets.ModelViewSet):
 
 class ReservationViewset(viewsets.ModelViewSet):
     serializer_class = ReservationSerializer
-
 
     def get_queryset(self, **kwargs):
         now = datetime.datetime.utcnow().replace(tzinfo=utc)
