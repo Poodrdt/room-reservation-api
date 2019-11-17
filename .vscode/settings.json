@@ -1,7 +1,15 @@
 {
-    "python.pythonPath": "C:\\Users\\dfmdeveloper10\\.virtualenvs\\Tallin-kA_drEpL\\Scripts\\python.exe",
+    "python.pythonPath": "C:\\Users\\Yaro\\.virtualenvs\\Tallin-050jpQ8q\\Scripts\\python.exe",
     "python.formatting.provider": "black",
     "djangointellisense.projectRoot": "${workspaceFolder}\\src",
     "djangointellisense.settingsModule": "${workspaceFolder}\\src\\main\\settings.py",
-    "gitlens.codeLens.enabled": false
+    "gitlens.codeLens.enabled": false,
+    "python.linting.pylintEnabled": true,
+    "python.linting.flake8Enabled": false,
+    "python.linting.enabled": true,
+    "python.linting.pylintArgs": [
+        "pylint_django",
+        "--load-plugins"
+    ],
+    "editor.formatOnSave": true
 }
