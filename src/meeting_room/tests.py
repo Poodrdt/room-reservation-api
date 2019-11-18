@@ -51,16 +51,16 @@ class ReadRoomTest(APITestCase):
 class UpdateUserTest(APITestCase):
 
     def setUp(self):
-        self.superuser = User.objects.create_superuser(
-            'john', 'john@snow.com', 'johnpassword')
-        self.client.login(username='john', password='johnpassword')
-        self.user = User.objects.create(username="mike", first_name="Tyson")
-        self.data = UserSerializer(self.user).data
+        self.user = User.objects.create_user(
+            username="test_user", password="test_pwd")
+        self.data = {"name": "test_room"}
+        self.room = Room.objects.create(self.data)
+
         self.data.update({'first_name': 'Changed'})
 
-    def test_can_update_user(self):
+    def test_can_update_room(self):
         response = self.client.put(
-            reverse('user-detail', args=[self.user.id]), self.data)
+            reverse('room-detail', args=[self.room.id]), self.data)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
 
