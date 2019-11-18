@@ -42,9 +42,39 @@ class ReadRoomTest(APITestCase):
         response = self.client.get(reverse("room-list"))
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
-    # def test_can_read_room_detail(self):
-    #     response = self.client.get(reverse('room-detail', args=[self.room.id]))
-    #     self.assertEqual(response.status_code, status.HTTP_200_OK)
+    def test_can_read_room_detail(self):
+        self.client.force_authenticate(user=self.user)
+        response = self.client.get(reverse('room-detail', args=[self.room.id]))
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+
+class UpdateUserTest(APITestCase):
+
+    def setUp(self):
+        self.superuser = User.objects.create_superuser(
+            'john', 'john@snow.com', 'johnpassword')
+        self.client.login(username='john', password='johnpassword')
+        self.user = User.objects.create(username="mike", first_name="Tyson")
+        self.data = UserSerializer(self.user).data
+        self.data.update({'first_name': 'Changed'})
+
+    def test_can_update_user(self):
+        response = self.client.put(
+            reverse('user-detail', args=[self.user.id]), self.data)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+
+class DeleteUserTest(APITestCase):
+    def setUp(self):
+        self.superuser = User.objects.create_superuser(
+            'john', 'john@snow.com', 'johnpassword')
+        self.client.login(username='john', password='johnpassword')
+        self.user = User.objects.create(username="mikey")
+
+    def test_can_delete_user(self):
+        response = self.client.delete(
+            reverse('user-detail', args=[self.user.id]))
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
 
     # def test_create_reservation(self):
     #     room_id = self.room.id
