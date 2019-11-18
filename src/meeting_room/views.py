@@ -1,5 +1,5 @@
 from rest_framework.response import Response
-from rest_framework import viewsets, generics, status
+from rest_framework import viewsets, generics, status, permissions
 from django.contrib.auth import get_user_model
 from .models import Reservation, Room
 from .serializers import (
@@ -43,6 +43,7 @@ class UserViewset(viewsets.ModelViewSet):
 
 
 class RoomViewset(viewsets.ModelViewSet):
+    permission_classes = (permissions.IsAuthenticated,)
     queryset = Room.objects.all()
     serializer_class = RoomSerializer
 

@@ -11,43 +11,40 @@ from .views import *
 from .serializers import *
 
 
-class RoomListTest(APITestCase):
-    def setUp(self):
-        names = [f"Room{i}" for i in range(5)]
-        map(lambda r: Room.objects.create(name=r), names)
-        self.client = APIClient()
-        self.factory = APIRequestFactory()
-        self.user = User.objects.create_user(username="test_user", password="test_pwd")
-        self.view = RoomViewset.as_view({"get": "list"})
+class CreateRoomTest(APITestCase):
 
-    def test_get_all_rooms_authorized(self):
-        url = reverse("room-list")
-        request = self.factory.get(url)
-        force_authenticate(request, user=self.user)
-        # request.user = self.user
-        # response = self.client.get(url)
-        # rooms = Room.objects.all()
-        response = self.view(request)
-        # serializer = RoomSerializer(rooms, many=True)
-        # self.assertEqual(response.data, serializer.data)
+    def setUp(self):
+        self.url = reverse("room-list")
+        self.user = User.objects.create_user(
+            username="test_user", password="test_pwd")
+        self.data = {"name": "test_room"}
+
+    def test_can_not_create_room(self):
+        response = self.client.post(self.url, self.data)
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+
+    def test_can_create_room(self):
+        self.client.force_authenticate(user=self.user)
+        response = self.client.post(self.url, self.data)
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+
+
+class ReadRoomTest(APITestCase):
+
+    def setUp(self):
+        self.user = User.objects.create_user(
+            username="test_user", password="test_pwd")
+        self.data = {"name": "test_room"}
+        # self.room = Room.objects.create(self.data)
+
+    def test_can_read_room_list(self):
+        self.client.force_authenticate(user=self.user)
+        response = self.client.get(reverse("room-list"))
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
-    # def test_get_all_rooms_unauthorized(self):
-    #     url = reverse("room-list")
-    #     response = self.client.get(url)
-    #     rooms = Room.objects.all()
-    #     serializer = RoomSerializer(rooms, many=True)
-    #     self.assertEqual(response.data, serializer.data)
+    # def test_can_read_room_detail(self):
+    #     response = self.client.get(reverse('room-detail', args=[self.room.id]))
     #     self.assertEqual(response.status_code, status.HTTP_200_OK)
-
-    # def test_create_room(self):
-    #     url = reverse("room-list")
-    #     data = {"name": "test_room"}
-    #     response = self.client.post(url, data, format="json")
-    #     self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-    #     self.assertEqual(Room.objects.count(), 1)
-    #     self.assertEqual(Room.objects.get().name, "test_room")
-    #     self.assertEqual(response.data.get("name"), "test_room")
 
     # def test_create_reservation(self):
     #     room_id = self.room.id
@@ -60,4 +57,3 @@ class RoomListTest(APITestCase):
     #     request = self.client.post('/reservation', payload, format='json')
 
     #     request.user = self.user
-
