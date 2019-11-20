@@ -37,7 +37,7 @@ User = get_user_model()
 
 
 class UserViewset(viewsets.ModelViewSet):
-    # permission_classes = (IsAuthenticated,)
+    permission_classes = (permissions.IsAdminUser,)
     queryset = User.objects.all()
     serializer_class = UserSerializer
 
@@ -49,6 +49,7 @@ class RoomViewset(viewsets.ModelViewSet):
 
 
 class ReservationViewset(viewsets.ModelViewSet):
+    permission_classes = (permissions.IsAuthenticated,)
     serializer_class = ReservationSerializer
 
     def get_queryset(self, **kwargs):

@@ -7,8 +7,8 @@ from rest_framework.test import (
     force_authenticate,
 )
 
-from .views import *
-from .serializers import *
+from meeting_room.views import *
+from meeting_room.serializers import *
 
 
 class CreateRoomTest(APITestCase):
@@ -35,7 +35,7 @@ class ReadRoomTest(APITestCase):
         self.user = User.objects.create_user(
             username="test_user", password="test_pwd")
         self.data = {"name": "test_room"}
-        # self.room = Room.objects.create(self.data)
+        self.room = Room.objects.create(**self.data)
 
     def test_can_read_room_list(self):
         self.client.force_authenticate(user=self.user)
@@ -51,39 +51,29 @@ class ReadRoomTest(APITestCase):
 class UpdateUserTest(APITestCase):
 
     def setUp(self):
+        self.data = {"name": "test_room"}
+        self.room = Room.objects.create(**self.data)
+        self.url = reverse("room-detail", args=[self.room.id])
         self.user = User.objects.create_user(
             username="test_user", password="test_pwd")
-        self.data = {"name": "test_room"}
-        self.room = Room.objects.create(self.data)
-
-        self.data.update({'first_name': 'Changed'})
+        self.data.update({'name': '"test_room_changed'})
 
     def test_can_update_room(self):
-        response = self.client.put(
-            reverse('room-detail', args=[self.room.id]), self.data)
+        self.client.force_authenticate(user=self.user)
+        response = self.client.put(self.url, self.data)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
 
 class DeleteUserTest(APITestCase):
     def setUp(self):
-        self.superuser = User.objects.create_superuser(
-            'john', 'john@snow.com', 'johnpassword')
-        self.client.login(username='john', password='johnpassword')
-        self.user = User.objects.create(username="mikey")
+        self.data = {"name": "test_room"}
+        self.room = Room.objects.create(**self.data)
+        self.url = reverse("room-detail", args=[self.room.id])
+        self.user = User.objects.create_user(
+            username="test_user", password="test_pwd")
 
     def test_can_delete_user(self):
+        self.client.force_authenticate(user=self.user)
         response = self.client.delete(
-            reverse('user-detail', args=[self.user.id]))
+            self.url)
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
-
-    # def test_create_reservation(self):
-    #     room_id = self.room.id
-    #     payload = {
-    #         "title": "test_title",
-    #         "start": "2019-11-12T10:00:00Z",
-    #         "end": "2019-11-12T11:00:00Z",
-    #         "room": room_id
-    #     }
-    #     request = self.client.post('/reservation', payload, format='json')
-
-    #     request.user = self.user
