@@ -5,6 +5,8 @@ from .models import Reservation, Room
 from .serializers import (
     RoomSerializer,
     ReservationSerializer,
+    ReservationGetSerializer,
+    ReservationPutSerializer,
     UserSerializer,
 )
 import datetime
@@ -51,6 +53,17 @@ class RoomViewset(viewsets.ModelViewSet):
 class ReservationViewset(viewsets.ModelViewSet):
     permission_classes = (permissions.IsAuthenticated,)
     serializer_class = ReservationSerializer
+
+    def get_serializer_class(self):
+        serializer_class = self.serializer_class
+
+        if self.request.method == 'GET':
+            serializer_class = ReservationGetSerializer
+
+        if self.request.method == 'PUT':
+            serializer_class = ReservationPutSerializer
+
+        return serializer_class
 
     def get_queryset(self, **kwargs):
         now = datetime.datetime.utcnow().replace(tzinfo=utc)

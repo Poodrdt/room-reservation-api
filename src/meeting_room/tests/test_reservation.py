@@ -83,7 +83,6 @@ class UpdateReservationTest(APITestCase):
         }
         self.reservation = Reservation.objects.create(**self.data)
         self.url = reverse("reservation-detail", args=[self.reservation.id])
-        self.data = {}
         self.data.update({
             "title": "test_title_changed",
             "start": "2019-11-12T10:00:00Z",

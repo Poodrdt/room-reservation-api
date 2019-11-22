@@ -25,32 +25,32 @@ class RoomSerializer(serializers.ModelSerializer):
         model = Room
         exclude = ()
 
-    # def get_serializer_class(self):
-    #     serializer_class = self.serializer_class
 
-    #     if self.request.method == 'PUT':
-    #         serializer_class = SerializerWithoutUsernameField
+class ReservationGetSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Reservation
+        fields = ("id", "title", "start", "end",
+                  "room", "employee")
 
-    #     return serializer_class
 
-    # def get_permissions(self):
-    #     if self.request.method == 'DELETE':
-    #         return [IsAdminUser()]
-    #     elif self.request.method == 'POST':
-    #         return [AllowAny()]
-    #     else:
-    #         return [IsStaffOrTargetUser()]
+class ReservationPutSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Reservation
+        fields = ("id", "title", "start", "end",
+                  "room", "employee", "reserved_by")
 
 
 class ReservationSerializer(serializers.ModelSerializer):
 
-    employee = serializers.HiddenField(default=serializers.CurrentUserDefault())
+    employee = serializers.HiddenField(
+        default=serializers.CurrentUserDefault())
 
     reserved_by = serializers.CharField(source="employee", read_only=True)
 
     class Meta:
         model = Reservation
-        fields = ("id", "title", "start", "end", "room", "employee", "reserved_by")
+        fields = ("id", "title", "start", "end",
+                  "room", "employee", "reserved_by")
 
     def validate(self, data):
         start, end, room = data["start"], data["end"], data["room"]
@@ -70,5 +70,6 @@ class ReservationSerializer(serializers.ModelSerializer):
 
     def validate_employee(self, value):
         if value.is_anonymous:
-            raise serializers.ValidationError(f"Can not reserve under Anonymous user")
+            raise serializers.ValidationError(
+                f"Can not reserve under Anonymous user")
         return value
