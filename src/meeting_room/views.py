@@ -5,37 +5,13 @@ from .models import Reservation, Room
 from .serializers import (
     RoomSerializer,
     ReservationSerializer,
-    ReservationGetSerializer,
-    ReservationPutSerializer,
+    ReservationCreateSerializer,
     UserSerializer,
 )
 import datetime
 from django.utils.timezone import utc
 
 User = get_user_model()
-
-# class UserViewSet(viewsets.ModelViewSet):
-#     """
-#     API endpoint that allows users to be viewed or edited.
-#     """
-#     serializer_class = UserSerializer
-#     model = User
-
-#     def get_serializer_class(self):
-#         serializer_class = self.serializer_class
-
-#         if self.request.method == 'PUT':
-#             serializer_class = SerializerWithoutUsernameField
-
-#         return serializer_class
-
-#     def get_permissions(self):
-#         if self.request.method == 'DELETE':
-#             return [IsAdminUser()]
-#         elif self.request.method == 'POST':
-#             return [AllowAny()]
-#         else:
-#             return [IsStaffOrTargetUser()]
 
 
 class UserViewset(viewsets.ModelViewSet):
@@ -57,11 +33,11 @@ class ReservationViewset(viewsets.ModelViewSet):
     def get_serializer_class(self):
         serializer_class = self.serializer_class
 
-        if self.request.method == 'GET':
-            serializer_class = ReservationGetSerializer
+        if self.action == 'create':
+            serializer_class = ReservationCreateSerializer
 
-        if self.request.method == 'PUT':
-            serializer_class = ReservationPutSerializer
+        if self.action == 'update' or self.action == 'partial_update':
+            serializer_class = ReservationCreateSerializer
 
         return serializer_class
 

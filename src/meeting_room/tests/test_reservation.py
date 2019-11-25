@@ -94,7 +94,6 @@ class UpdateReservationTest(APITestCase):
     def test_can_update_reservation(self):
         self.client.force_authenticate(user=self.user)
         response = self.client.put(self.url, self.data)
-        print(response.data)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
 

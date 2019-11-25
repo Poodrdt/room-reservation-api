@@ -26,31 +26,20 @@ class RoomSerializer(serializers.ModelSerializer):
         exclude = ()
 
 
-class ReservationGetSerializer(serializers.ModelSerializer):
+class ReservationSerializer(serializers.ModelSerializer):
+
+    employee = serializers.CharField(read_only=True)
+
     class Meta:
         model = Reservation
         fields = ("id", "title", "start", "end",
                   "room", "employee")
 
 
-class ReservationPutSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Reservation
-        fields = ("id", "title", "start", "end",
-                  "room", "employee", "reserved_by")
-
-
-class ReservationSerializer(serializers.ModelSerializer):
+class ReservationCreateSerializer(ReservationSerializer):
 
     employee = serializers.HiddenField(
         default=serializers.CurrentUserDefault())
-
-    reserved_by = serializers.CharField(source="employee", read_only=True)
-
-    class Meta:
-        model = Reservation
-        fields = ("id", "title", "start", "end",
-                  "room", "employee", "reserved_by")
 
     def validate(self, data):
         start, end, room = data["start"], data["end"], data["room"]
@@ -62,6 +51,8 @@ class ReservationSerializer(serializers.ModelSerializer):
             | Q(start__gt=start, end__lt=end),
             room=room,
         )
+        if self.instance:
+            overlap = overlap.exclude(id=self.instance.id)
         if overlap.exists():
             raise serializers.ValidationError(
                 f"This room is already reserved at {overlap[0]}"
