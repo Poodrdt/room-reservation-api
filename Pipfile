@@ -6,8 +6,13 @@ name = "pypi"
 [packages]
 django = "*"
 django-rest-framework = "*"
+pylint = "*"
+django-filters = "*"
+django-filter = "*"
+django-crispy-forms = "*"
 
 [dev-packages]
+"autopep8" = "*"
 
 [requires]
 python_version = "3.6"
