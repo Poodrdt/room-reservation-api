@@ -46,9 +46,9 @@ class ReservationCreateSerializer(ReservationSerializer):
         if start > end:
             raise serializers.ValidationError("End must occur after start")
         overlap = Reservation.objects.filter(
-            Q(start__lte=start, end__gt=start)
-            | Q(start__lt=end, end__gte=end)
-            | Q(start__gt=start, end__lt=end),
+            Q(start__lte=start, end__gt=start) |
+            Q(start__lt=end, end__gte=end) |
+            Q(start__gt=start, end__lt=end),
             room=room,
         )
         if self.instance:
