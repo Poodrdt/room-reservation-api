@@ -34,10 +34,7 @@ class ReservationViewset(viewsets.ModelViewSet):
     def get_serializer_class(self):
         serializer_class = self.serializer_class
 
-        if self.action == 'create':
-            serializer_class = ReservationCreateSerializer
-
-        if self.action == 'update' or self.action == 'partial_update':
+        if self.action in ('create', 'update', 'partial_update'):
             serializer_class = ReservationCreateSerializer
 
         return serializer_class
