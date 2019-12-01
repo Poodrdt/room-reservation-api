@@ -6,8 +6,14 @@ name = "pypi"
 [packages]
 django = "*"
 django-rest-framework = "*"
+pylint-django = "*"
 
 [dev-packages]
+pylint = "*"
+black = "*"
 
 [requires]
-python_version = "3.6"
+python_version = "3.7"
+
+[pipenv]
+allow_prereleases = true
